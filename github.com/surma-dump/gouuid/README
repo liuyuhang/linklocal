@@ -1,0 +1,1 @@
+gouuid package implements [UUID](https://en.wikipedia.org/wiki/UUID#Version_4_.28random.29) (version 4, random) type and methods for the manipulation of it.

@@ -12,11 +12,14 @@ import (
 	"linklocal/model"
 	"linklocal/auth"
 	"linklocal/utils"
+	"linklocal/rabbitmq"
+	"github.com/streadway/amqp"
 )
 
 var (
 	m          = macaron.Classic()
 	listenPort = 3000
+	jobs   = make(chan amqp.Delivery, 10)
 )
 
 func init() {
@@ -35,6 +38,13 @@ func init() {
 	dataSource, _ := config.GetString("default", "data_source")
 	model.InitModelDB(dataDriver, dataSource)
 
+	log.Info("Init AMQP...")
+	rabbitmq_server, _ := config.GetString("default", "rabbitmq_server")
+	uuid, _ := config.GetString("default", "uuid")
+	err = rabbitmq.InitAMQP(jobs, rabbitmq_server, "linklocal", "zaq12wsxUu125478521", uuid)
+	if err != nil {
+		log.Debug(err)
+	}
 	// Init Controller
 	controller.InitRouter(m)
 

@@ -42,6 +42,27 @@ func CreateUser(args map[string]interface{})(user *model.User,err error){
 	return
 }
 
+func Register(username, email,password string)(err error){
+	user := new(model.User)
+	user.Name = username
+	user.Email = email
+	user.Password = utils.GetMd5s(password)
+	user.Type = "register"
+	user.Description = ""
+	user.EndTime = time.Now().Add(model.Eternal)
+	user.TrueName = username
+	user.Tel = "+86 *"
+	user.CreatedBy = "register"
+	user.CreatedDate = time.Now()
+	user.EndAction = "keep"
+	err = model.CreateUser(user)
+	if err != nil{
+		log.Error(err.Error())
+	}
+	user.Password = "******"
+	return
+}
+
 func DeleteUser(user_id string)(err error){
 	// todo Check if user has Admin To Group
 	log.Debug(user_id)
@@ -146,4 +167,22 @@ func ChangeUserEndTime(id string, args map[string]interface{})(err error){
 	}
 	model.ChangeUserEndTime(id,endtime)
 	return
+}
+
+func CheckUsername(username string)(err error){
+	_,err = model.GetUserByName(username)
+	if err==nil{
+		err = fmt.Errorf("Username already in use.")
+		return
+	}
+	return nil
+}
+
+func CheckEmail(email string)(err error){
+	_,err = model.GetUserByEmail(email)
+	if err==nil{
+		err = fmt.Errorf("Email already in use.")
+		return
+	}
+	return nil
 }

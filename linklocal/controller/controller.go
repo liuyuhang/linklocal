@@ -27,7 +27,10 @@ func initBaseRouter(m *macaron.Macaron){
 func initAuthRouter(m *macaron.Macaron){
 	m.Post("/login",Login)
 	m.Post("/logout",Logout)
+	m.Post("/register",Register)
 	m.Group("/auth",func(){
+		m.Post("/checkusername",CheckUsername)
+		m.Post("/checkemail",CheckEmail)
 		m.Group("/users",func(){
 			m.Post("",authorize,CreateUser)
 			m.Delete("/:id",authorize,DeleteUser)

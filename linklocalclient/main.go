@@ -7,10 +7,6 @@ package main
 import (
 	"github.com/ccwings/log"
 	"gopkg.in/macaron.v1"
-	"strconv"
-	"linklocal/controller"
-	"linklocal/model"
-	"linklocal/auth"
 	"linklocal/utils"
 	"linklocal/rabbitmq"
 	"github.com/streadway/amqp"
@@ -18,25 +14,16 @@ import (
 
 var (
 	m          = macaron.Classic()
-	listenPort = 3000
 	jobs   = make(chan amqp.Delivery, 10)
 )
 
 func init() {
+	log.Info("Init function started")
 	// Read Config File
 	config, err := utils.ReadConf()
 	if err != nil {
 		log.Error("Config File Read Error")
 	}
-
-	// Define Listen Port
-	listenPortStr, _ := config.GetString("default", "listen")
-	listenPort, _ = strconv.Atoi(listenPortStr)
-
-	// Init DB
-	dataDriver, _ := config.GetString("default", "data_driver")
-	dataSource, _ := config.GetString("default", "data_source")
-	model.InitModelDB(dataDriver, dataSource)
 
 
 	rabbitmq_enable, _ := config.GetBool("default", "rabbitmq_enable")
@@ -50,19 +37,16 @@ func init() {
 		}
 	}
 
-	// Init Controller
-	controller.InitRouter(m)
-
-	// Init Token For Test Env
-	auth.InitDevToken()
+	log.Info("Init function finished")
 
 }
 
 func main() {
 	log.SetOutputLevel(0)
 	log.Info("Service Starting...")
-	m.Use(macaron.Renderer(macaron.RenderOptions{
-		IndentJSON: true,
-	}))
-	m.Run(listenPort)
+	forever := make(chan bool)
+	log.Info("main Server Start")
+	log.Info("Starting service...")
+	<-forever
+	log.Info("End service...")
 }

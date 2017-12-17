@@ -10,6 +10,7 @@ func initModelData(){
 	initUser()
 	initGroup()
 	initUserGroup()
+	initMainServer()
 	return
 }
 
@@ -83,6 +84,21 @@ func initUserGroup(){
 	adminUserGroup.Type = "admin"
 	adminUserGroup.Priority = "1"
 	err = CreateUserGroup(adminUserGroup)
+	if err != nil{
+		log.Error(err.Error())
+	}
+	return
+}
+
+func initMainServer(){
+	mainserver1 := new(MainServer)
+	mainserver1.Name = "MainServer"
+	mainserver1.LastCheckTime = time.Now()
+	mainserver1.Description = "Created By SuperAdmin"
+	mainserver1.CreatedBy = "OS"
+	mainserver1.CreatedDate = time.Now()
+
+	err := CreateMainServer(mainserver1)
 	if err != nil{
 		log.Error(err.Error())
 	}

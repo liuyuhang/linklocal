@@ -27,7 +27,7 @@ func InitModelDB(dataDriver,dataSource string)(err error){
 		}
 	}
 	defer initModelData()
-	err = x.Sync(new(User),new(Group),new(UserGroup))
+	err = x.Sync(new(User),new(Group),new(UserGroup),new(MainServer))
 	if err!= nil{
 		log.Error(err.Error())
 		return

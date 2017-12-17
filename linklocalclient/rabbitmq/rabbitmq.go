@@ -18,7 +18,7 @@ var (
 
 const(
 	exchange = "linklocal"
-	modelname = "api"
+	modelname = "server"
 )
 
 type RabbitmqMsg struct {

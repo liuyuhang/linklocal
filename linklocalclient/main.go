@@ -7,8 +7,8 @@ package main
 import (
 	"github.com/ccwings/log"
 	"gopkg.in/macaron.v1"
-	"linklocal/utils"
-	"linklocal/rabbitmq"
+	"linklocalclient/utils"
+	"linklocalclient/rabbitmq"
 	"github.com/streadway/amqp"
 )
 
@@ -25,17 +25,17 @@ func init() {
 		log.Error("Config File Read Error")
 	}
 
-
-	rabbitmq_enable, _ := config.GetBool("default", "rabbitmq_enable")
-	if rabbitmq_enable {
+	rabbitmqEnable, _ := config.GetBool("default", "rabbitmq_enable")
+	if rabbitmqEnable {
 		log.Info("Init AMQP...")
-		rabbitmq_server, _ := config.GetString("default", "rabbitmq_server")
+		rabbitmqServer, _ := config.GetString("default", "rabbitmq_server")
 		uuid, _ := config.GetString("default", "uuid")
-		err = rabbitmq.InitAMQP(jobs, rabbitmq_server, "linklocal", "zaq12wsxUu125478521", uuid)
+		err = rabbitmq.InitAMQP(jobs, rabbitmqServer, "linklocal", "zaq12wsx", uuid)
 		if err != nil {
 			log.Debug(err)
 		}
 	}
+
 
 	log.Info("Init function finished")
 

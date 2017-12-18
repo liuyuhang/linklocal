@@ -44,7 +44,7 @@ func init() {
 		log.Info("Init AMQP...")
 		rabbitmq_server, _ := config.GetString("default", "rabbitmq_server")
 		uuid, _ := config.GetString("default", "uuid")
-		err = rabbitmq.InitAMQP(jobs, rabbitmq_server, "linklocal", "zaq12wsxUu125478521", uuid)
+		err = rabbitmq.InitAMQP(jobs, rabbitmq_server, "linklocal", "zaq12wsx", uuid)
 		if err != nil {
 			log.Debug(err)
 		}
